@@ -36,6 +36,16 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Walking", false);
         }
 
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            anim.SetTrigger("punch");
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            anim.SetTrigger("kick");
+        }
+
+
         lookat.localPosition = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         model.LookAt(lookat);
     }
