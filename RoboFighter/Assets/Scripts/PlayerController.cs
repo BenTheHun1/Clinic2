@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     public Transform model;
     public Transform lookat;
 
+    public Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetAxis("Vertical") != 0f)
         {
             gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, Input.GetAxis("Vertical")) * speed * Time.deltaTime, ForceMode.Impulse);
+        }
+
+        if (gameObject.GetComponent<Rigidbody>().velocity != Vector3.zero)
+        {
+            anim.SetBool("Walking", true);
+        }
+        else
+        {
+            anim.SetBool("Walking", false);
         }
 
         lookat.localPosition = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
