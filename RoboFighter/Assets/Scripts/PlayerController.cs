@@ -1,8 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed;
+
+
+    public float hp;
+    public Image displayHP;
+    public float sp;
+    public Image displaySP;
 
     public Transform model;
     public Transform lookat;
@@ -12,7 +21,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        UpdateStats();
     }
 
     // Update is called once per frame
@@ -44,9 +53,31 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetTrigger("kick");
         }
-
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            anim.SetTrigger("block");
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            anim.SetTrigger("special");
+        }
 
         lookat.localPosition = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         model.LookAt(lookat);
+    }
+
+    void UpdateStats()
+    {
+        displayHP.fillAmount = hp / 100;
+        displaySP.fillAmount = sp / 20;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            hp -= 10;
+            UpdateStats();
+        }
     }
 }
