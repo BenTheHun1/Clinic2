@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     public Transform lookat;
 
     public Animator anim;
+    public Attacker atk;
+    public bool blocking;
 
     // Start is called before the first frame update
     void Start()
@@ -45,21 +47,43 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Walking", false);
         }
 
+        if (anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Walk" || anim.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle")
+        {
+            atk.gameObject.SetActive(false);
+            blocking = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             anim.SetTrigger("punch");
+           // model.localRotation = Quaternion.Euler(model.localRotation.eulerAngles.x, model.localRotation.eulerAngles.y - 90, model.localRotation.eulerAngles.z);
+            atk.gameObject.SetActive(true);
+            atk.dmg = 1;
+            blocking = false;
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             anim.SetTrigger("kick");
+            //model.localRotation = Quaternion.Euler(model.localRotation.eulerAngles.x, model.localRotation.eulerAngles.y - 90, model.localRotation.eulerAngles.z);
+            atk.gameObject.SetActive(true);
+            atk.dmg = 2;
+            blocking = false;
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
             anim.SetTrigger("block");
+            //model.localRotation = Quaternion.Euler(model.localRotation.eulerAngles.x, model.localRotation.eulerAngles.y - 90, model.localRotation.eulerAngles.z);
+            atk.gameObject.SetActive(false);
+            blocking = true;
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && sp >= 20)
         {
             anim.SetTrigger("special");
+            //model.localRotation = Quaternion.Euler(model.localRotation.eulerAngles.x, model.localRotation.eulerAngles.y - 90, model.localRotation.eulerAngles.z);
+            atk.gameObject.SetActive(true);
+            atk.dmg = 10;
+            sp = 0;
+            blocking = false;
         }
 
         lookat.localPosition = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -74,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") && !blocking)
         {
             hp -= 10;
             UpdateStats();
