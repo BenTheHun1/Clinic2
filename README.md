@@ -1,2 +1,2 @@
-#Clinic2
-RoboFighters
+# Robo Fighter
+For 3D Game Developnent class.
