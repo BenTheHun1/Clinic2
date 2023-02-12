@@ -1,2 +1,2 @@
 # Robo Fighter
-For 3D Game Developnent class.
+For 3D Game Development class.
